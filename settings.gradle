@@ -1,0 +1,3 @@
+rootProject.name = 'ServiceFramework'
+include ':ServiceFramework', ':JavaLibrary'
+project( ':JavaLibrary').projectDir = new File( settingsDir, '../JavaLibrary' )
