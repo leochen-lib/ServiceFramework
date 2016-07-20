@@ -6,7 +6,7 @@
 package fw.util;
 
 import java.util.Enumeration;
-import javalib.Debug;
+import jlib.tool.Debug;
 import javax.servlet.http.HttpServletRequest;
 
 /**
