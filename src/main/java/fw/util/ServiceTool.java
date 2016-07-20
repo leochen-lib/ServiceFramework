@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servicelib.util;
+package fw.util;
 
 import java.util.Enumeration;
 import javalib.Debug;

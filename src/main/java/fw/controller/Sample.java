@@ -1,4 +1,4 @@
-package servicelib.controller;
+package fw.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import javalib.HM;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import servicelib.controller.ControllerBase;
+import fw.controller.ControllerBase;
 
 /**
  *
