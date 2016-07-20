@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 
 /**
  *
@@ -18,18 +19,26 @@ public abstract class ControllerBase extends HttpServlet {
     protected String TAG = ControllerBase.class.getName();
     protected String contextPath = null;
     
-    private void jsonBase(HttpServletRequest request, HttpServletResponse response) {
+    private void List2Json(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
         contextPath = request.getContextPath();
         try (PrintWriter out = response.getWriter()) {
-            out.print(list2json((ALHM) jsonAction(request, response)).toString());
+            
+            if ( null != (ALHM) listAction(request, response) ){
+                out.print( list2json((ALHM) listAction(request, response)).toString() );
+            }else if( null != jsonAction(request, response) ){
+                out.print( jsonAction(request, response).toString() );
+            }
+            
         }catch (IOException e){
             e.printStackTrace();
         }
     }
     
-    protected abstract List jsonAction(HttpServletRequest request, HttpServletResponse response);
+    protected List listAction(HttpServletRequest request, HttpServletResponse response){return null;};
+    
+    protected JSONArray jsonAction(HttpServletRequest request, HttpServletResponse response){return null;};
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -43,7 +52,7 @@ public abstract class ControllerBase extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        jsonBase(request, response);
+        List2Json(request, response);
     }
 
     /**
@@ -57,7 +66,7 @@ public abstract class ControllerBase extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        jsonBase(request, response);
+        List2Json(request, response);
     }
 
     /**
