@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jlib.tool.Debug;
 import org.json.JSONArray;
 
 /**
@@ -18,6 +19,7 @@ import org.json.JSONArray;
 public abstract class ControllerBase extends HttpServlet {
     protected String TAG = ControllerBase.class.getName();
     protected String contextPath = null;
+    protected Debug de = new Debug(true);
     
     private void List2Json(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
