@@ -29,7 +29,7 @@ public class Sample extends ControllerBase {
 //        // request.getContextPath()
 //        
 ////        return testList();
-//        return testDB();
+//        return testListDB();
 //    }
     
     @Override
@@ -89,13 +89,13 @@ public class Sample extends ControllerBase {
     }
     
     private List testListDB(){
-        DBFunction dbf = new DBFunction(dbDriverMySQL, "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf-8", "test", "");
+        DBFunction dbf = new DBFunction(dbDriverMySQL, "jdbc:mysql://pet-cn.cyzk2se3cauz.rds.cn-north-1.amazonaws.com.cn:3306/acer_pet?useUnicode=true&characterEncoding=utf-8", "acer.pet", "acer.pet.1234");
         ArrayList valueList = new ArrayList();
-        valueList.add("leo");
+        valueList.add("1");
         ALHM result = null;
         try {
             dbf.connect(true);
-            result = dbf.selectList("select * from `account`, `location` where `location`.`account_id` = `account`.`id`", null);
+            result = dbf.selectList("select * from `account` where id = ?", valueList);
             dbf.disconnect();
         } catch (Exception ex) {
             Logger.getLogger(Sample.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,14 +104,14 @@ public class Sample extends ControllerBase {
     }
     
     private JSONArray testJsonDB(){
-        DBFunction dbf = new DBFunction(dbDriverMySQL, "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf-8", "test", "");
+        DBFunction dbf = new DBFunction(dbDriverMySQL, "jdbc:mysql://pet-cn.cyzk2se3cauz.rds.cn-north-1.amazonaws.com.cn:3306/acer_pet?useUnicode=true&characterEncoding=utf-8", "acer.pet", "acer.pet.1234");
         ArrayList valueList = new ArrayList();
-        valueList.add("leo");
+        valueList.add("1");
         JSONArray result = null;
         try {
             dbf.connect(true);
-//            resultJArr = dbf.selectJson("SELECT * FROM account WHERE account = ?", valueList);
-            result = dbf.selectJson("select * from `account`, `location` where `location`.`account_id` = `account`.`id`", null);
+            result = dbf.selectJson("SELECT * FROM account WHERE id = ?", valueList);
+//            result = dbf.selectJson("select * from `account`, `location` where `location`.`account_id` = `account`.`id`", null);
             dbf.disconnect();
             
         } catch (Exception ex) {
