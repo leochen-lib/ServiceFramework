@@ -2,7 +2,9 @@ package fw.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import jlib.util.ALHM;
 import static jlib.tool.TooletStatic.list2json;
 import javax.servlet.ServletException;
@@ -21,14 +23,14 @@ public abstract class ControllerBase extends HttpServlet {
     protected String contextPath = null;
     protected Debug de = new Debug(true);
     
-    private void List2Json(HttpServletRequest request, HttpServletResponse response) {
+    private void work2Json(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
         contextPath = request.getContextPath();
         try (PrintWriter out = response.getWriter()) {
             
             if ( null != (ALHM) listAction(request, response) ){
-                out.print( list2json((ALHM) listAction(request, response)).toString() );
+                out.print( list2json( listAction(request, response)).toString() );
             }else if( null != jsonAction(request, response) ){
                 out.print( jsonAction(request, response).toString() );
             }
@@ -54,7 +56,7 @@ public abstract class ControllerBase extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List2Json(request, response);
+        work2Json(request, response);
     }
 
     /**
@@ -68,7 +70,7 @@ public abstract class ControllerBase extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List2Json(request, response);
+        work2Json(request, response);
     }
 
     /**

@@ -10,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import fw.controller.ControllerBase;
+import static fw.util.ServiceTool.requiredParm;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static jlib.Constants.*;
@@ -24,20 +26,16 @@ import org.json.JSONArray;
 @WebServlet(name = "api", urlPatterns = {"/api"})
 public class Sample extends ControllerBase {
     
-//    @Override
-//    protected List listAction(HttpServletRequest request, HttpServletResponse response){
-//        // request.getContextPath()
-//        
-////        return testList();
-//        return testListDB();
-//    }
-    
     @Override
-    protected JSONArray jsonAction(HttpServletRequest request, HttpServletResponse response){
-        // request.getContextPath()
-        
-        return testJsonDB();
+    protected List listAction(HttpServletRequest request, HttpServletResponse response){
+//        return testList();
+        return testListDB();
     }
+    
+//    @Override
+//    protected JSONArray jsonAction(HttpServletRequest request, HttpServletResponse response){
+//        return testJsonDB(request);
+//    }
     
     
     private List testList(){
@@ -89,13 +87,12 @@ public class Sample extends ControllerBase {
     }
     
     private List testListDB(){
-        DBFunction dbf = new DBFunction(dbDriverMySQL, "jdbc:mysql://pet-cn.cyzk2se3cauz.rds.cn-north-1.amazonaws.com.cn:3306/acer_pet?useUnicode=true&characterEncoding=utf-8", "acer.pet", "acer.pet.1234");
-        ArrayList valueList = new ArrayList();
-        valueList.add("1");
+        DBFunction dbf = new DBFunction(dbDriverMySQL, "jdbc:mysql://54.222.229.99/acer_pet?useUnicode=true&characterEncoding=utf-8", "acer.pet", "acer.pet.1234");
         ALHM result = null;
         try {
-            dbf.connect(true);
-            result = dbf.selectList("select * from `account` where id = ?", valueList);
+            dbf.connect();
+            result = dbf.selectALHM("select * from `account` where id = ?", "1");
+            dbf.commit();
             dbf.disconnect();
         } catch (Exception ex) {
             Logger.getLogger(Sample.class.getName()).log(Level.SEVERE, null, ex);
@@ -103,19 +100,27 @@ public class Sample extends ControllerBase {
         return result;
     }
     
-    private JSONArray testJsonDB(){
-        DBFunction dbf = new DBFunction(dbDriverMySQL, "jdbc:mysql://pet-cn.cyzk2se3cauz.rds.cn-north-1.amazonaws.com.cn:3306/acer_pet?useUnicode=true&characterEncoding=utf-8", "acer.pet", "acer.pet.1234");
-        ArrayList valueList = new ArrayList();
-        valueList.add("1");
+    private JSONArray testJsonDB(HttpServletRequest request){
+        DBFunction dbf = new DBFunction(dbDriverMySQL, "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf-8", "test", "test");
+        
+        String id = requiredParm(request, "id");
+        
         JSONArray result = null;
         try {
             dbf.connect(true);
-            result = dbf.selectJson("SELECT * FROM account WHERE id = ?", valueList);
-//            result = dbf.selectJson("select * from `account`, `location` where `location`.`account_id` = `account`.`id`", null);
+            result = dbf.selectJson("SELECT * FROM account WHERE id = ?", id);
             dbf.disconnect();
             
-        } catch (Exception ex) {
+        }catch (Exception ex) {
             Logger.getLogger(Sample.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(dbf.getConnection() != null) {
+                try {
+                    dbf.getConnection().close();
+                } catch (SQLException e) {
+                    // ignore
+                }
+            }
         }
         return result;
     }
