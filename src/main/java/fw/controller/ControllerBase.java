@@ -29,20 +29,22 @@ public abstract class ControllerBase extends HttpServlet {
         contextPath = request.getContextPath();
         try (PrintWriter out = response.getWriter()) {
             
-            if ( null != (ALHM) listAction(request, response) ){
-                out.print( list2json( listAction(request, response)).toString() );
-            }else if( null != jsonAction(request, response) ){
-                out.print( jsonAction(request, response).toString() );
+            Object result = action(request, response);
+            if ( result instanceof List ){
+                out.print( list2json( (List)result ).toString() );
+            }else if( result instanceof JSONArray ){
+                out.print( result.toString() );
+            }else{
+                de.println("No support object.");
             }
+            
             
         }catch (IOException e){
             e.printStackTrace();
         }
     }
     
-    protected List listAction(HttpServletRequest request, HttpServletResponse response){return null;};
-    
-    protected JSONArray jsonAction(HttpServletRequest request, HttpServletResponse response){return null;};
+    protected abstract Object action(HttpServletRequest request, HttpServletResponse response);
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

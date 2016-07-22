@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import fw.controller.ControllerBase;
+import static fw.util.ServiceTool.optionalParm;
 import static fw.util.ServiceTool.requiredParm;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -26,17 +27,20 @@ import org.json.JSONArray;
 @WebServlet(name = "api", urlPatterns = {"/api"})
 public class Sample extends ControllerBase {
     
+    public static final String dbconn = "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf-8";
+    public static final String dbaccount = "test";
+    public static final String dbpwd = "test";
+    
     @Override
-    protected List listAction(HttpServletRequest request, HttpServletResponse response){
+    protected Object action(HttpServletRequest request, HttpServletResponse response){
 //        return testList();
-        return testListDB();
+        return testDB(request);
     }
     
 //    @Override
 //    protected JSONArray jsonAction(HttpServletRequest request, HttpServletResponse response){
 //        return testJsonDB(request);
 //    }
-    
     
     private List testList(){
         ALHM list = new ALHM();
@@ -86,32 +90,52 @@ public class Sample extends ControllerBase {
             return list;
     }
     
-    private List testListDB(){
-        DBFunction dbf = new DBFunction(dbDriverMySQL, "jdbc:mysql://54.222.229.99/acer_pet?useUnicode=true&characterEncoding=utf-8", "acer.pet", "acer.pet.1234");
-        ALHM result = null;
+    private Object testDB(HttpServletRequest request){
+        DBFunction dbf = new DBFunction(dbDriverMySQL, dbconn, dbaccount, dbpwd);
+        
+        Object result = null;
         try {
-            dbf.connect();
-            result = dbf.selectALHM("select * from `account` where id = ?", "1");
-            dbf.commit();
+            dbf.connect(true);
+            // http://localhost:8080/fw/api?id=1
+//            result = dbf.getALHM("select * from `account` where id = ?", requiredParm(request, "id"));
+//            result = dbf.getJson("select * from `account` where id = ?", requiredParm(request, "id"));
+            // http://localhost:8080/fw/api?account_id=1&location=SHA3&info=Hellow World!!
+//            result = dbf.setALHM("INSERT INTO `location` (`account_id`, `location`, `info`) VALUES (?, ?, ?)", requiredParm(request, "account_id"), requiredParm(request, "location"), optionalParm(request, "info"));
+//            result = dbf.setJson("INSERT INTO `location` (`account_id`, `location`, `info`) VALUES (?, ?, ?)", requiredParm(request, "account_id"), requiredParm(request, "location"), optionalParm(request, "info"));
+            // http://localhost:8080/fw/api?id=8&location=SHA123
+//            result = dbf.setALHM("UPDATE `location` SET `location`=? WHERE `id`=?", requiredParm(request, "location"), requiredParm(request, "id"));
+//            result = dbf.setJson("UPDATE `location` SET `location`=? WHERE `id`=?", requiredParm(request, "location"), requiredParm(request, "id"));
+            // http://localhost:8080/fw/api?id=5
+//            result = dbf.setALHM("DELETE FROM `location` WHERE `id`=?", requiredParm(request, "id"));
+//            result = dbf.setJson("DELETE FROM `location` WHERE `id`=?", requiredParm(request, "id"));
             dbf.disconnect();
         } catch (Exception ex) {
             Logger.getLogger(Sample.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(dbf.getConnection() != null) {
+                try {
+                    dbf.getConnection().close();
+                } catch (SQLException e) {
+                    // ignore
+                }
+            }
         }
         return result;
     }
     
     private JSONArray testJsonDB(HttpServletRequest request){
-        DBFunction dbf = new DBFunction(dbDriverMySQL, "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf-8", "test", "test");
+        DBFunction dbf = new DBFunction(dbDriverMySQL, dbconn, dbaccount, dbpwd);
         
         String id = requiredParm(request, "id");
         
         JSONArray result = null;
         try {
             dbf.connect(true);
-            result = dbf.selectJson("SELECT * FROM account WHERE id = ?", id);
+
+            result = dbf.setJson("DELETE FROM `location` WHERE `id`=?", id);
             dbf.disconnect();
             
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Sample.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if(dbf.getConnection() != null) {
