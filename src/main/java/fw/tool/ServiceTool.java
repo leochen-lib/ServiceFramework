@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fw.util;
+package fw.tool;
 
+import static fw.Constants.*;
 import java.util.Enumeration;
 import jlib.tool.Debug;
 import javax.servlet.http.HttpServletRequest;
+import jlib.tool.AppProp;
+import jlib.tool.Toolet;
 import org.apache.commons.lang3.StringUtils;
 
 /**

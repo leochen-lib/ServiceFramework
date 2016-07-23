@@ -1,5 +1,6 @@
 package fw.controller;
 
+import static fw.Constants.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,13 +11,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import fw.controller.ControllerBase;
-import static fw.util.ServiceTool.optionalParm;
-import static fw.util.ServiceTool.requiredParm;
+import fw.tool.ServiceProp;
+import static fw.tool.ServiceTool.optionalParm;
+import static fw.tool.ServiceTool.requiredParm;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static jlib.Constants.*;
 import jlib.db.DBFunction;
+import jlib.tool.AppProp;
 import org.json.JSONArray;
 
 /**
@@ -34,13 +37,17 @@ public class Sample extends ControllerBase {
     @Override
     protected Object action(HttpServletRequest request, HttpServletResponse response){
 //        return testList();
+
+        testServiceProp();
+
         return testDB(request);
     }
     
-//    @Override
-//    protected JSONArray jsonAction(HttpServletRequest request, HttpServletResponse response){
-//        return testJsonDB(request);
-//    }
+    private void testServiceProp(){
+        ServiceProp sapp = new ServiceProp();
+        de.println(sapp.getAppValue(envStr));
+        
+    }
     
     private List testList(){
         ALHM list = new ALHM();

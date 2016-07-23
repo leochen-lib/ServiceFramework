@@ -11,8 +11,8 @@ war {
     baseName = 'fw'
 
     from('src/main/java') {
-        include '*.properties'
-        into('WEB-INF/classes')
+        include 'properties/'
+        into('WEB-INF/')
     }
 }
 
