@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fw.tool;
+package sfw.tool;
 
-import static fw.Constants.*;
+import static sfw.Constants.*;
 import java.util.Enumeration;
 import jlib.tool.Debug;
 import javax.servlet.http.HttpServletRequest;

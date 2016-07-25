@@ -1,6 +1,6 @@
-package fw.controller;
+package sfw.controller;
 
-import static fw.Constants.*;
+import static sfw.Constants.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +10,10 @@ import jlib.util.HM;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import fw.controller.ControllerBase;
-import fw.tool.ServiceProp;
-import static fw.tool.ServiceTool.optionalParm;
-import static fw.tool.ServiceTool.requiredParm;
+import sfw.controller.ControllerBase;
+import sfw.tool.ServiceProp;
+import static sfw.tool.ServiceTool.optionalParm;
+import static sfw.tool.ServiceTool.requiredParm;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
