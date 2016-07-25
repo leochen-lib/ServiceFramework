@@ -36,6 +36,7 @@ public class ServiceTool {
         
         if ( StringUtils.isBlank(result) ) {
             de.println("key : " + key + " is optional, but no value.");
+            return "";
         }
         
         return result;

@@ -8,7 +8,7 @@ war {
 //    println "${destinationDir}"
     destinationDir = file("$buildDir/war")
 //    println "${destinationDir}"
-    baseName = 'fw'
+    baseName = 'sfw'
 
     from('src/main/java') {
         include 'properties/'

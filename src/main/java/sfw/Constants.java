@@ -15,5 +15,8 @@ public class Constants {
     public static final String appStr = "app.properties";
     public static final String dbStr = "db.properties";
     public static final String envStr = "env.filter";
+    public static final String dbConnectPreStr = "db.connect.";
+    public static final String dbUserPreStr = "db.user.";
+    public static final String dbPasswordPreStr = "db.password.";
     
 }

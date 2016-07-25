@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static jlib.Constants.*;
 import jlib.db.DBFunction;
+import static jlib.db.DBFunction.pageing;
 import jlib.tool.AppProp;
 import org.json.JSONArray;
 
@@ -30,23 +31,28 @@ import org.json.JSONArray;
 @WebServlet(name = "api", urlPatterns = {"/api"})
 public class Sample extends ControllerBase {
     
-    public static final String dbconn = "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf-8";
-    public static final String dbaccount = "test";
-    public static final String dbpwd = "test";
+//    public static final String dbconn = "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf-8";
+//    public static final String dbaccount = "test";
+//    public static final String dbpwd = "test";
+    static ServiceProp sapp = new ServiceProp();
+    static final String env = sapp.getDBValue(envStr);
+    
+    static final String dbconn = sapp.getDBValue(dbConnectPreStr+env);
+    static final String dbaccount = sapp.getDBValue(dbUserPreStr+env);
+    static final String dbpwd = sapp.getDBValue(dbPasswordPreStr+env);
     
     @Override
     protected Object action(HttpServletRequest request, HttpServletResponse response){
 //        return testList();
-
-        testServiceProp();
-
         return testDB(request);
+
+//        testServiceProp();
+//        return new ALHM();
     }
     
     private void testServiceProp(){
-        ServiceProp sapp = new ServiceProp();
-        de.println(sapp.getAppValue(envStr));
         
+        de.println(sapp.getAppValue(envStr));
     }
     
     private List testList(){
@@ -104,7 +110,7 @@ public class Sample extends ControllerBase {
         try {
             dbf.connect(true);
             // http://localhost:8080/fw/api?id=1
-//            result = dbf.getALHM("select * from `account` where id = ?", requiredParm(request, "id"));
+            result = dbf.getALHM("select * from `account` where id = ? ORDER BY id" + pageing(optionalParm(request, "page")), requiredParm(request, "id"));
 //            result = dbf.getJson("select * from `account` where id = ?", requiredParm(request, "id"));
             // http://localhost:8080/fw/api?account_id=1&location=SHA3&info=Hellow World!!
 //            result = dbf.setALHM("INSERT INTO `location` (`account_id`, `location`, `info`) VALUES (?, ?, ?)", requiredParm(request, "account_id"), requiredParm(request, "location"), optionalParm(request, "info"));
