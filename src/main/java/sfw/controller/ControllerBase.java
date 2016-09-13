@@ -27,11 +27,13 @@ public abstract class ControllerBase extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
         contextPath = request.getContextPath();
+//        Boolean 
         try (PrintWriter out = response.getWriter()) {
             
             Object result = action(request, response);
+            String optional = request.getParameter("returnOptional");
             if ( result instanceof List ){
-                out.print( list2json( (List)result ).toString() );
+                out.print( list2json( (List)result, Boolean.parseBoolean(optional) ).toString() );
             }else if( result instanceof JSONArray ){
                 out.print( result.toString() );
             }else{
