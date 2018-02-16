@@ -49,6 +49,6 @@ dependencies {
 //    runtime 'javax.servlet:jstl:1.1.2'
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
-}
+//task wrapper(type: Wrapper) {
+//    gradleVersion = '1.11'
+//}
